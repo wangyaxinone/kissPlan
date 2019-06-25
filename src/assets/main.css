@@ -1,0 +1,122 @@
+.p10{
+    padding:10px;
+    box-sizing: border-box;
+}
+.p20{
+    padding:10px;
+    box-sizing: border-box;
+}
+.pb10{
+    padding-bottom:10px;
+}
+.ptr10{
+    padding:0 10px;
+}
+.mt10{
+    margin-top:10px;
+}
+.mt20{
+    margin-top:20px;
+}
+.mb10{
+    margin-bottom:10px;
+}
+.mb20{
+    margin-bottom:20px;
+}
+.mr10{
+    margin-right:10px;
+}
+.bgf{
+    background-color: #fff;
+}
+.bgg{
+    background-color: #4dad51;
+}
+.colorG{
+    color:#4dad51;
+}
+.colorR{
+    color:#f44539;
+}
+.bdr10{
+    border-radius: 10px;
+}
+.tar{
+    text-align: right;
+}
+.tac{
+    text-align: center;
+}
+.tal{
+    text-align: left;
+}
+.floatL{
+    float: left;
+}
+.floatR{
+    float: right;
+}
+.clearfix:after {
+	content:""; 
+	display: block; 
+	clear:both; 
+}
+.h60{
+    display: inline-block !important;
+    height:60px !important;
+    line-height: 60px !important;
+}
+.baseColor{
+	color:#ea6f5a;
+}
+.border{
+    border: 1px solid #ea6f5a;
+}
+.bb1{
+    border-bottom: 1px solid #ddd;
+}
+.pointer{
+    cursor: pointer;
+}
+
+@media (min-width: 1600px){
+    .container {
+        max-width: 1440px !important;
+    }
+}
+@media (min-width: 1920px){
+    .container {
+        max-width: 1640px !important;
+    }
+}
+.box {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+@media (min-width: 768px){
+    .box {
+        width: 750px;
+    }
+    
+}
+@media (min-width: 992px){
+    .box {
+        width: 970px;
+    }
+}
+@media (min-width: 1081px){
+    .box {
+        width: 960px;
+    }
+}
+@media (max-width: 767px){
+    .phone_hide{
+        display:none;
+    }
+    .phoneTAC{
+        text-align: center !important;
+    }
+}

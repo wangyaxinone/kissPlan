@@ -9,29 +9,29 @@
             <mu-tooltip :content="userMessage" placement="top" :open="userRepeat">
                 <div class="login_input_box mt20">
                     <mu-icon class="toggle-icon iconfont icon" size="25" value=":icon-addressbook"></mu-icon>
-                    <input  class="input" id="username" placeholder="请输入账号" v-model="validateForm.username" @input="usernameInput" type="text" autocomplete="off">
+                    <input  class="input" id="userName" placeholder="请输入账号" v-model="validateForm.userName" @input="userNameInput" type="text" autocomplete="off">
                 
-                        <i class="iconfont icon-gantanhao passwordErr" :class="[userErr?'icon-duigoutianchong- colorG':'icon-gantanhao colorR']"></i>
+                        <i class="iconfont icon-gantanhao passWordErr" :class="[userErr?'icon-duigoutianchong- colorG':'icon-gantanhao colorR']"></i>
                     
                 </div>
             </mu-tooltip>
             <mu-tooltip content="不能为空" placement="top">
                 <div class="login_input_box">
                     <mu-icon class="toggle-icon iconfont icon" size="25" value=":icon-lock"></mu-icon>
-                    <input autocomplete="new-password" class="input"  id="password" placeholder="密码长度为6-12之间，只能是字母、数字和下划线" v-model="validateForm.password" @input="passwordInput" type="password">
-                    <i class="iconfont icon-gantanhao passwordErr" :class="[passwordErr?'icon-duigoutianchong- colorG':'icon-gantanhao colorR']"></i>
+                    <input autocomplete="new-passWord" class="input"  id="passWord" placeholder="密码长度为6-12之间，只能是字母、数字和下划线" v-model="validateForm.passWord" @input="passWordInput" type="passWord">
+                    <i class="iconfont icon-gantanhao passWordErr" :class="[passWordErr?'icon-duigoutianchong- colorG':'icon-gantanhao colorR']"></i>
                 </div>
            </mu-tooltip>
-           <mu-tooltip content="不能为空" placement="top">
+           <mu-tooltip :content="phoneMessage" placement="top">
                 <div class="login_input_box">
                     <mu-icon class="toggle-icon iconfont icon" size="25" value=":icon-lock"></mu-icon>
-                    <input class="input"  id="email" placeholder="请输入邮箱（asc@qq.com）" v-model="validateForm.email" @input="emailInput" type="email" autocomplete="off">
-                    <i class="iconfont icon-gantanhao passwordErr" :class="[emailErr?'icon-duigoutianchong- colorG':'icon-gantanhao colorR']"></i>
+                    <input class="input"  id="phone" placeholder="请输入手机号码" v-model="validateForm.phone" @input="phoneInput" type="phone" autocomplete="off">
+                    <i class="iconfont icon-gantanhao passWordErr" :class="[phoneErr?'icon-duigoutianchong- colorG':'icon-gantanhao colorR']"></i>
                 </div>
            </mu-tooltip>
             <mu-row gutter class="btn_box">
                 <mu-col span="24">
-                    <mu-button color="success" class="login_button" :disabled="(userErr && passwordErr && emailErr)?false:true" @click="registerC">注册</mu-button>
+                    <mu-button color="success" class="login_button" :disabled="(userErr && passWordErr && phoneErr)?false:true" @click="registerC">注册</mu-button>
                 </mu-col>
             </mu-row >
         </div>
@@ -49,14 +49,14 @@ export default {
             userRepeat:false,
             active:1,
             userMessage:'不能为空',
-
+            phoneMessage:'不能为空',
             userErr:false,
-            passwordErr:false,
-            emailErr:false,
+            passWordErr:false,
+            phoneErr:false,
             validateForm:{
-                username:'',
-                password:'',
-                email:'',
+                userName:'',
+                passWord:'',
+                phone:'',
             }
         }
     },
@@ -64,9 +64,9 @@ export default {
         ...mapState(['user'])
     },
     methods:{
-        ...mapActions(['userEmilRepeat','_register']),
+        ...mapActions(['userEmilRepeat','_register','userPhoneRepeat']),
         registerC() {
-            if(this.userErr && this.passwordErr && this.emailErr){
+            if(this.userErr && this.passWordErr && this.phoneErr){
                 this._register(this.validateForm)
                 .then((res)=>{
                     if(res && res.status=='200'){
@@ -91,53 +91,58 @@ export default {
         goHome() {
             this.$router.push('/')
         },
-        usernameInput() {
-            var username = this.validateForm.username;
-            if(username.trim()){
+        userNameInput() {
+            var userName = this.validateForm.userName;
+            if(userName.trim()){
                 this.userEmilRepeat({
-                    username:username,
-                    email:this.validateForm.email
+                    userName:userName,
                 })
                 .then((res)=>{
-                    if(res && res.status=='200'){
+                    if(res && res.code=='200'){
                         this.userErr = true;
                         this.userRepeat = true;
-                        this.userMessage = '不能为空';
+                        this.userMessage = '账号可以注册';
+                    }else{
+                        this.userErr = false;
+                        this.userRepeat = true;
+                        this.userMessage = '账号重复';
                     }
-                },(err)=>{
-                    this.userMessage = err.msg;
                 })
             }else{
+                this.userErr = false;
+                this.userRepeat = false;
                 this.userMessage = '不能为空';
             }
         },
-        passwordInput() {
-            var password = this.validateForm.password; 
+        passWordInput() {
+            var passWord = this.validateForm.passWord; 
             var reg = /^[\w]{6,12}$/;
-            if(new RegExp(reg).test(password)){
-                this.passwordErr = true;
+            if(new RegExp(reg).test(passWord)){
+                this.passWordErr = true;
             }else{
-                this.passwordErr = false;
+                this.passWordErr = false;
             }
         },
-        emailInput() {
-            var email = this.validateForm.email; 
-            var reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
-            if(new RegExp(reg).test(email)){
+        phoneInput() {
+            var phone = this.validateForm.phone; 
+            var reg = /^1(3|4|5|6|7|8|9)\d{9}$/;
+            if(new RegExp(reg).test(phone)){
                 
-                this.userEmilRepeat({
-                    username:this.validateForm.username,
-                    email:this.validateForm.email
+                this.userPhoneRepeat({
+                    phone:this.validateForm.phone
                 })
                 .then((res)=>{
-                    if(res && res.status=='200'){
-                        this.emailErr = true;
+                    if(res && res.code=='200'){
+                        this.phoneErr = true;
+                        this.phoneMessage="手机号码可以注册"
+                    }else{
+                        this.phoneErr = false;
+                        this.phoneMessage="手机号码已存在"
                     }
-                },(err)=>{
-                    this.emailErr = false;
                 })
             }else{
-                this.emailErr = false;
+                this.phoneErr = false;
+                this.phoneMessage="不能为空"
             }
         }
     },
@@ -191,7 +196,7 @@ export default {
                     top:2px;
                     left:8px;
                 }
-                .passwordErr{
+                .passWordErr{
                     position: absolute;
                     right:15px;
                     top:8px;

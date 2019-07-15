@@ -7,26 +7,35 @@ export default {
         count : 1
     }),
     actions : {
+        userPhoneRepeat({commit},data){
+            return api.instance({
+                method:'post',
+                url:'/user/hasPhone',
+                hasLoading:false,
+                data:{
+                    phone:data.phone,
+                }
+            })
+        },
         userEmilRepeat({commit},data) {
             return api.instance({
                 method:'post',
-                url:'/u/check',
+                url:'/user/hasUserName',
                 hasLoading:false,
-                data:Qs.stringify({
-                    username:data.username,
-                    email:data.email,
-                })
+                data:{
+                    userName:data.userName,
+                }
             })
         },
         _register({commit},data) {
             return api.instance({
                 method:'post',
-                url:'/u/register',
-                data:Qs.stringify({
-                    username:data.username,
-                    password:data.password,
-                    email:data.email,
-                })
+                url:'/user/signUp',
+                data:{
+                    userName:data.userName,
+                    passWord:data.passWord,
+                    phone:data.phone,
+                }
             })
         }
     },

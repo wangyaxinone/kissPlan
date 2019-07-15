@@ -190,7 +190,6 @@ export default {
             this.$router.push('/login')
         },
         signOut() {
-            debugger
             this.$store.dispatch('logout')
             .then((res)=>{
                 window.localStorage.clear();

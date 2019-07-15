@@ -32,12 +32,12 @@ import download from "./components/download.vue"
 import author from "./components/author.vue"
 export default {
     name:'home',
-    asyncData({store}){
-        return store.dispatch('home/getNewItem',{
-            pageNo:1,
-            pageSize:store.state.pageSize
-        });
-    },
+    // asyncData({store}){
+    //     return store.dispatch('home/getNewItem',{
+    //         pageNo:1,
+    //         pageSize:store.state.pageSize
+    //     });
+    // },
     data(){
         return {
             pageNo:1,

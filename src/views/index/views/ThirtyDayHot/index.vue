@@ -27,12 +27,12 @@ import contentItem from "@/components/contentItem/index.vue"
 import author from "@/components/author/index.vue"
 export default {
     name:'ThirtyDayHot',
-    asyncData({store}){
-        return store.dispatch('home/getNewItem',{
-            pageNo:1,
-            pageSize:10
-        });
-    },
+    // asyncData({store}){
+    //     return store.dispatch('home/getNewItem',{
+    //         pageNo:1,
+    //         pageSize:10
+    //     });
+    // },
     data(){
         return {
             open:true,

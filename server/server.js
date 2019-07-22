@@ -10,9 +10,12 @@ const app = express();
 app.use('/static',express.static(path.join(__dirname, '../dist'),{
   maxAge:31536000
 }))
+app.use('/admin',express.static(path.join(__dirname, '../admin/dist'),{
+  maxAge:31536000
+}))
 var proxyTable = {
   '/api': {
-      target:  'http://localhost:3001',
+      target:  'admin.jsercode.com:3001',
       pathRewrite: {
           '^/api': '/'
       }
@@ -50,6 +53,9 @@ if (isProd) {
   })
  
 }
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname,'../admin/index.html'));
+})
 app.get('*', (req, res) => {
     if (!renderer) {
       return res.end('waiting for compilation... refresh in a moment.')

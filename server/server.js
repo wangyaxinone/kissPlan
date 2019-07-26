@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('../config/index.js');
 const fs = require('fs')
 const path = require('path')
 const proxyMiddleware = require('http-proxy-middleware');//引入代理中间件
@@ -13,9 +14,10 @@ app.use('/static',express.static(path.join(__dirname, '../dist'),{
 app.use('/admin',express.static(path.join(__dirname, '../admin/dist'),{
   maxAge:31536000
 }))
+console.log( config.baseUrl);
 var proxyTable = {
   '/api': {
-      target:  'admin.jsercode.com:3001',
+      target:  config.baseUrl,
       pathRewrite: {
           '^/api': '/'
       }

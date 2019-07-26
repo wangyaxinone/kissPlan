@@ -4,8 +4,7 @@ import modules from './modules'
 import api from '@/api'
 var Qs = require('qs')
 Vue.use(Vuex);
-import api from '@/api'
-var Qs = require('qs')
+
 export function createStore(){
     return new Vuex.Store({
         state:{

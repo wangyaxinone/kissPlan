@@ -56,17 +56,16 @@ export default {
                 return false;
             }
             var data = {
-                username:this.validateForm.userName,
-                password:this.validateForm.password,
-                is_need_token:1
+                userName:this.validateForm.userName,
+                passWord:this.validateForm.password,
             }
             this.$axios.instance({
-                url:'/login',
+                url:'/user/signIn',
                 method:'post',
-                data:Qs.stringify(data)
+                data:data
             })
             .then((res) => {
-                if(res.status == 200){
+                if(res.code == 200){
                     this.$message({
                         message: '登陆成功',
                         showClose: true,
@@ -74,6 +73,7 @@ export default {
                     });
                     this.setUser(res.data)
                     window.localStorage.setItem('user',JSON.stringify(res.data))
+                    window.localStorage.setItem('token',res.data.token)
                     setTimeout(()=>{
                         this.$router.push('/index')
                         // location.href='/index'

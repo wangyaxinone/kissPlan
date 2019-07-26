@@ -1,23 +1,23 @@
 const express = require('express');
+const config = require('../config/index.js');
 const fs = require('fs')
 const path = require('path')
 const proxyMiddleware = require('http-proxy-middleware');//引入代理中间件
 const { createBundleRenderer } = require('vue-server-renderer')
-
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV !== 'development'
 const resolve = file => path.resolve(__dirname, file)
-const app = express()
-app.set('trust proxy', function (ip) {
-  if (ip === '127.0.0.1' || ip === '123.123.123.123') return true; // trusted IPs
-  else return false;
-})
+const app = express();
+
 app.use('/static',express.static(path.join(__dirname, '../dist'),{
   maxAge:31536000
 }))
-
+app.use('/admin',express.static(path.join(__dirname, '../admin/dist'),{
+  maxAge:31536000
+}))
+console.log( config.baseUrl);
 var proxyTable = {
   '/api': {
-      target:  'http://106.12.205.37:8080',
+      target:  config.baseUrl,
       pathRewrite: {
           '^/api': '/'
       }
@@ -25,9 +25,9 @@ var proxyTable = {
 }
 var arr = [];
 for(var key in proxyTable){
-arr.push(
-  proxyMiddleware([key], proxyTable[key]),
-)
+  arr.push(
+    proxyMiddleware([key], proxyTable[key]),
+  )
 }
 app.middleware = arr
 app.use(arr);
@@ -41,6 +41,7 @@ function createRenderer(bundle, template) {
     //clientManifest // （可选）客户端构建 manifest
   })
 }
+console.log(isProd);
 if (isProd) {
     // 生产环境使用本地打包文件来渲染
     const serverBundle = require('../dist/vue-ssr-server-bundle.json')
@@ -54,7 +55,9 @@ if (isProd) {
   })
  
 }
-
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname,'../admin/index.html'));
+})
 app.get('*', (req, res) => {
     if (!renderer) {
       return res.end('waiting for compilation... refresh in a moment.')
@@ -84,7 +87,7 @@ app.get('*', (req, res) => {
     })
 })
   
-const port = /*process.env.PORT ||*/ 80
+const port = /*process.env.PORT ||*/ 3000
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`)
 })

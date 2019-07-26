@@ -15,6 +15,7 @@ module.exports = {
         extensions: ['.js', '.vue', '.json'],
         alias: {
             '@': path.join(__dirname,'../src'),
+            '@server':path.join(__dirname,'../server'),
             '@images': path.join(__dirname,'../src/assets/images'),
         }
     },

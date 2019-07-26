@@ -56,7 +56,6 @@ export function createStore(){
         },
         actions:{
             logout({commit},data) {
-                debugger
                 return api.instance({
                     method:'get',
                     url:'/logout',

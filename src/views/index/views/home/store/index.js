@@ -11,18 +11,22 @@ export default {
         getCarousel({commit},n){
             return api.instance({
                 method:'get',
-                url:'/index/slideshow',
+                url:'/admin/getCarousel',
                 hasLoading:false,
             })
             .then((res)=>{
-                if(res.status==200){
-                    if(res.data && res.data.slideshow){
-                        commit('setCarousel',res.data.slideshow)
+                if(res.code==200){
+                    console.log(res.data);
+                    if(res.data ){
+                        commit('setCarousel',res.data)
                     }else{
                         commit('setCarousel',[])
                     }
                 }
                 return res
+            })
+            .catch((err)=>{
+                console.log(res.data);
             })
         },
         getNewItem({commit},data) {
@@ -46,6 +50,7 @@ export default {
     },
     mutations:{
         setCarousel: (state,data) => {
+            console.log(data)
             state.imgs=data 
         },
         setNewItem:(state,data)=>{

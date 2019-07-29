@@ -3,8 +3,8 @@
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="(item,idx) in imgs" :key="idx">
-                    <a :href="item.url">
-                        <img :src="item.img" ref="imgs">
+                    <a :href="item.imgLink">
+                        <img :src="item.imgUrl" ref="imgs">
                     </a>
                 </div>
             </div>
@@ -26,9 +26,9 @@ import "swiper/dist/css/swiper.css"
 
 export default {
     name:'carousel',
-    // asyncData({store}){
-    //     return store.dispatch('home/getCarousel')
-    // },
+    asyncData({store}){
+        return store.dispatch('home/getCarousel')
+    },
     data:function(){
         return {
             // imgs:[],

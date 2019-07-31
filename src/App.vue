@@ -5,9 +5,18 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+import Cookies from 'js-cookie'
 export default {
 	name: 'App',
-	mounted(){
+	
+	beforeMount(){
+		this.setUser();
+		this.setKiss_plan_token();
+		Cookies.set('x-access-token', window.localStorage.getItem('token') || '');
+	},
+	methods:{
+		...mapMutations(['setUser','setKiss_plan_token'])
 	}
 }
 </script>

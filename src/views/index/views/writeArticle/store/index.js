@@ -6,12 +6,13 @@ export default {
     state:{
         _editorType:'富文本编辑器',
         _mavonEditorQP:false,//markdown编辑器全屏
+        _articleType:[],
         _writeArticleMenuType:[
             {
                 title:'默认菜单',
                 content:'',
-                articleType:'0',
-                preview:'',
+                type:0,
+                self:false,
                 mdContent:'',
                 active:true,
             },
@@ -22,8 +23,8 @@ export default {
             var data = state._writeArticleMenuType[0];
             return api.instance({
                 method:'post',
-                url:'/article/save',
-                data:Qs.stringify(data)
+                url:'/admin/Articles',
+                data:data
             })
             .then((res)=>{
                 if(res.status==200){
@@ -31,14 +32,28 @@ export default {
                 }
                 return res
             })
+        },
+        _getArticleType({commit}){
+            return api.instance({
+                method:'get',
+                url:'/admin/getDict?code=articleType',
+            })
+            .then((res)=>{
+                commit('_setArticleType',res.data)
+                return res.data
+            })
         }
     },
     mutations:{
+        _setArticleType(state,data){
+            state._articleType = data;
+        },
         //修改文章
         _setNewsItem(state,data) {
-            for(var key in data){
-                state._writeArticleMenuType[data.idx][key] = data[key]
-            }
+            var arr = [];
+            $.extend(true,arr,state._writeArticleMenuType) 
+            arr[data.idx]= data
+            state._writeArticleMenuType = arr;
         },
         //设置文章选中
         _checkNewsItem(state,idx) {
@@ -49,6 +64,7 @@ export default {
                 })
             }
             arr[idx].active = true;
+            state._writeArticleMenuType = arr;
         },
         _addWriteArticleMenuType(state,type) {
             state._writeArticleMenuType.push({

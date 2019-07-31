@@ -2,18 +2,18 @@
     <div class="newsAutor">
         <div class="mt20 newsTargetDetail">
             <mu-avatar size="45" style="vertical-align: middle;margin-right:5px;cursor:pointer;float:left;">
-                <img :src="data.avatars"  @click="$router.push(`/userHome/${data.authorId}`)">
+                <img :src="data.user.avatarImg"  @click="$router.push(`/userHome/${data._id}`)">
             </mu-avatar>
             <div style="margin-left:50px;height:50px;">
                 <div style="padding:0 10px;">
-                    <span class="name " @click="$router.push(`/userHome/${data.authorId}`)" style="cursor:pointer;">{{data.username}}</span>
+                    <span class="name " @click="$router.push(`/userHome/${data._id}`)" style="cursor:pointer;">{{data.user.name || data.user.userName}}</span>
                     <mu-tooltip content="更新达人">
                         <i class="iconfont icon-bi"></i>
                     </mu-tooltip>
                     
                 </div>
                 <div style="padding:0 10px;" class="new-t-t-y-p-x">
-                    <span>{{data.updateDate}}</span>
+                    <span>{{data.meta.updateAt}}</span>
                     <span>字数 {{data.content&& data.content.length | MoneyFormat(true)}}</span>
                     <span>阅读 {{(data.readNum || 0) | MoneyFormat(true)}}</span>
                     <span>评论 {{(data.commentNum || 0) | MoneyFormat(true)}}</span>

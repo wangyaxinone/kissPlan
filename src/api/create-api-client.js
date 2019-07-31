@@ -10,8 +10,9 @@ export function createAPI ({client}){
         hasLoading:client.hasLoading,
     });
     instance.interceptors.request.use(function (config) {
-        if(config.kiss_plan_token){
-            config.headers.kiss_plan_token = config.kiss_plan_token;
+        var token = window.localStorage.getItem('token');
+        if(token){
+            config.headers['blade-auth'] = token;
         }
         if(config.hasLoading){
             hasLoading = Vue.prototype.$loading({
@@ -35,14 +36,20 @@ export function createAPI ({client}){
             if(hasLoading){
                 hasLoading.close();
             }
-            if (response.status >= 200 && response.status < 300) {
+            if (response.data.code >= 200 && response.data.code < 400) {
                 return response.data
+            }
+            if (response.data.code == 401) {
+                setTimeout(()=>{
+                    window.localStorage.clear();
+                    location.href="/login"
+                },1000)
             }
             if(hasMessage){
                 Vue.prototype.$message({
-                    message: response.msg,
+                    message: response.data.msg,
                     showClose: true,
-                    type: 'warning'
+                    type: 'error'
                 });
             }
             return Promise.reject(response)

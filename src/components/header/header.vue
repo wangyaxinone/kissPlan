@@ -18,14 +18,14 @@
                     </mu-text-field>
                 </mu-col>
                 <mu-col span="12" sm="12" md="4" class="tar phone_hide">
-                    <span  class="el-dropdown-link"  v-if="!$store.state.user || !$store.state.user.user">
+                    <span  class="el-dropdown-link"  v-if="!$store.state.user">
                         <mu-button flat color="primary" class="h60" @click="signIn">登录</mu-button>    
                     </span>
-                    <el-dropdown  @command="handleCommand"  v-if="$store.state.user && $store.state.user.user">
+                    <el-dropdown  @command="handleCommand"  v-if="$store.state.user">
                         
                         <span  class="el-dropdown-link">
                             <mu-avatar size="36" style="vertical-align: middle;margin-right:5px;cursor:pointer;"  ref="button" @click="open = !open">
-                                <img :src="$store.state.user.user.avatars">
+                                <img :src="$store.state.user.avatarImg">
                             </mu-avatar>
                         </span>
                         <el-dropdown-menu slot="dropdown">
@@ -85,7 +85,7 @@
                     </mu-list-item-action>
                     <mu-list-item-title>写文章</mu-list-item-title>
                 </mu-list-item>
-                <mu-list-item button  @click="signIn"  v-if="!$store.state.user || !$store.state.user.user">
+                <mu-list-item button  @click="signIn"  v-if="!$store.state.user ">
                     <mu-list-item-action class="tac">
                         <i class="iconfont icon-huodongxiangqu"></i>
                     </mu-list-item-action>
@@ -144,6 +144,9 @@ export default {
         })
        
     },
+    beforeMount(){
+       
+    },
     methods:{
         ...mapMutations(['setUser']),
         handleCommand(command) {
@@ -190,11 +193,8 @@ export default {
             this.$router.push('/login')
         },
         signOut() {
-            this.$store.dispatch('logout')
-            .then((res)=>{
-                window.localStorage.clear();
-                this.$router.push('/login')
-            })
+            window.localStorage.clear();
+            location.href = '/login'
         },
         click_phone_menu() {
             this.phone_menu = !this.phone_menu;

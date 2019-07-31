@@ -104,7 +104,7 @@ export default {
             }
             this.articleSave(this.$store.state.user)
             .then((res)=>{
-                if(res.status==200){
+                if(res.code==200){
                     this.$message({
                         message: '文章发布成功，3s后将跳转至首页',
                         showClose: true,

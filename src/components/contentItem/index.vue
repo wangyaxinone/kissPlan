@@ -1,14 +1,14 @@
 <template>
     <div class="contentItem">
-        <a class="wrap-img" v-if="data.firstImg" :href="'/news/'+data.id" target="_blank">
+        <a class="wrap-img" v-if="data.firstImg" :href="'/news/'+data._id" target="_blank">
             <img class="img-blur-done" :src="data.firstImg" alt="120">
         </a>
         <div class="content" :class="{hasImg:data.firstImg}">
-            <a class="title"  :href="'/news/'+data.id">{{data.title}}</a>
+            <a class="title"  :href="'/news/'+data._id">{{data.title}}</a>
             <p class="abstract"  v-html="data.preview">
             </p>
             <div class="meta">
-                <a class="nickname mr10" target="_blank"  :href="'/news/'+data.id">{{data.username}}</a>
+                <a class="nickname mr10" target="_blank"  :href="'/news/'+data._id">{{data.user.name || data.user.userName}}</a>
                 <span class="mr10"><i class="iconfont icon-message"></i>{{data.commentNum}}</span>
                 <span><i class="iconfont icon-shoucang_xiantiao"></i> {{data.likeNum}}</span>
             </div>

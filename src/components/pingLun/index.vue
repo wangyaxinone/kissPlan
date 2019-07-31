@@ -1,9 +1,9 @@
 <template>
     <div class="pingLun">
-        <mu-avatar  v-if="!hide_head && $store.state.user.user" size="45" style="vertical-align: middle;margin-right:5px;cursor:pointer;float:left;">
-            <img :src="$store.state.user.user && $store.state.user.user.avatars">
+        <mu-avatar  v-if="!hide_head && $store.state.user" size="45" style="vertical-align: middle;margin-right:5px;cursor:pointer;float:left;">
+            <img :src="$store.state.user.avatarImg">
         </mu-avatar>
-        <div class="pingLinInputBox" v-if="$store.state.user.user">
+        <div class="pingLinInputBox" v-if="$store.state.user">
             <el-input
                 type="textarea"
                 :rows="5"

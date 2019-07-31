@@ -12,10 +12,10 @@ export default {
         getNews({commit},data){
             return api.instance({
                 method:'get',
-                url:`/article/${data.id}`
+                url:`admin/getNews?_id=${data.id}`
             })
             .then((res)=>{
-                if(res.status==200){
+                if(res.code==200){
                     if(res.data){
                         commit('setNews',res.data)
                     }else{

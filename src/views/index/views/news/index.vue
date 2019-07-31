@@ -34,22 +34,22 @@ import pingLun from "@/components/pingLun/index.vue"
 import comment from "@/components/comment/index.vue"
 export default {
     name:'news',
-    // asyncData({store}){
-    //     var id = store.state.route.params.id;
-    //     if(!id){
-    //         id= store.state.route.from.params.id;
-    //     }
-    //     return Promise.all([
-    //         store.dispatch('news/getNews',{
-    //             id:id
-    //         }),
+    asyncData({store}){
+        var id = store.state.route.params.id;
+        if(!id){
+            id= store.state.route.from.params.id;
+        }
+        return Promise.all([
+            store.dispatch('news/getNews',{
+                id:id
+            }),
             
-    //         store.dispatch('news/getComment',{
-    //             id:id,
-    //             pageNo:1
-    //         }),
-    //     ]);
-    // },
+            // store.dispatch('news/getComment',{
+            //     id:id,
+            //     pageNo:1
+            // }),
+        ]);
+    },
     data(){
         return {
             value:'',

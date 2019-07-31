@@ -16,7 +16,6 @@ export default {
             })
             .then((res)=>{
                 if(res.code==200){
-                    console.log(res.data);
                     if(res.data ){
                         commit('setCarousel',res.data)
                     }else{
@@ -26,19 +25,18 @@ export default {
                 return res
             })
             .catch((err)=>{
-                console.log(res.data);
             })
         },
         getNewItem({commit},data) {
             return api.instance({
                 method:'get',
                 hasLoading:false,
-                url:`/article?pageNo=${data.pageNo}&pageSize=${data.pageSize}`
+                url:`admin/Articles?current=${data.pageNo}&size=${data.pageSize}`
             })
             .then((res)=>{
-               
-                if(res.status==200){
-                    if(res.data){
+                console.log(res);
+                if(res.code==200){
+                    if(res.data && res.data.records && res.data.records.length){
                         commit('setNewItem',res.data)
                     }else{
                         commit('setNewItem',[])
@@ -46,19 +44,22 @@ export default {
                 }
                 return res
             })
+            .catch((err)=>{
+                console.log(err);
+            })
         }
     },
     mutations:{
         setCarousel: (state,data) => {
-            console.log(data)
             state.imgs=data 
         },
         setNewItem:(state,data)=>{
+            console.log(data);
             state.newItemObj = data;
-            if(data.pageNo>1){
-                state.newItem = state.newItem.concat(data.list)
+            if(data.current>1){
+                state.newItem = state.newItem.concat(data.records)
             }else{
-                state.newItem = data.list;
+                state.newItem = data.records;
             }
            
         }

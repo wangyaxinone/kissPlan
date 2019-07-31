@@ -10,28 +10,27 @@
             </el-menu-item>
             
         </el-menu>
-        <mu-dialog :title="dialogTitle" width="760" :open.sync="openSimple">
+        <el-dialog :title="dialogTitle" width="760" :visible.sync="openSimple">
             <el-form ref="form" :rules="rules" :model="form" label-width="100px">
                 <el-form-item label="文章标题" prop="title">
                     <el-input v-model="form.title"></el-input>
                 </el-form-item>
-                <!-- <el-form-item label="文章类型">
-                    <el-select v-model="form.region" placeholder="请选择活动区域">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
+                <el-form-item label="文章类型" prop="type">
+                    <el-select v-model="form.type" placeholder="请选择活动区域">
+                        <el-option :label="item.dictValue" :value="item._id" v-for="(item,index) in _articleType" :key="index"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="仅自己可见">
-                    <el-switch v-model="form.delivery"></el-switch>
-                </el-form-item> -->
-                <el-form-item label="文章描述">
-                    <el-input type="textarea" v-model="form.preview"></el-input>
+                    <el-switch v-model="form.self"></el-switch>
                 </el-form-item>
+                <div class="tac">
+                     <mu-button slot="actions" flat color="default" @click="closeSimpleDialog">取消</mu-button>
+                    <mu-button slot="actions" flat color="primary" @click="OkSimpleDialog">确定</mu-button>
+                </div>
             
             </el-form>
-            <mu-button slot="actions" flat color="default" @click="closeSimpleDialog">取消</mu-button>
-            <mu-button slot="actions" flat color="primary" @click="OkSimpleDialog">确定</mu-button>
-        </mu-dialog>
+            
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -46,7 +45,8 @@ export default {
             openSimple:false,
             form:{
                 title:'',
-                preview:'',
+                type:'',
+                self:false
             },
             dialogTitle:'修改文章详情',
             nowData:{},
@@ -54,12 +54,15 @@ export default {
                 title:[
                     { required: true, message: '请输入文章标题', trigger: 'blur' },
                     { min: 3, max: 25, message: '长度在 3 到 25 个字符', trigger: 'blur' }
+                ],
+                type:[
+                    { required: true, message: '请输入文章类型', trigger: 'blur' },
                 ]
             }
         }
     },
     computed:{
-        ...mapState(['_writeArticleMenuType']),
+        ...mapState(['_writeArticleMenuType','_articleType']),
         
     },
     mounted(){
@@ -72,9 +75,11 @@ export default {
                 that.openSimple = !that.openSimple;
             }
         })
+       
     },
     methods:{
         ...mapMutations(['_checkNewsItem','_setNewsItem']),
+        ...mapActions(['_getArticleType']),
         clickNative(idx) {
             this._checkNewsItem(idx);
         },
@@ -96,14 +101,16 @@ export default {
                     }
                 })
             }
-            this.form = {
-                title:that.nowData.title,
-                preview:that.nowData.preview,
-            }
+            this.form = that.nowData
+             this._getArticleType()
+            .then((data)=>{
+                that.form.type = data[0]._id;
+            })
         },
         OkSimpleDialog() {
             this.$refs['form'].validate((valid) => {
                 if (valid) {
+                    debugger
                     var data = {
                         idx:this.activeIdx,
                     };

@@ -11,13 +11,14 @@ const app = express();
 app.use('/static',express.static(path.join(__dirname, '../dist'),{
   maxAge:31536000
 }))
-app.use('/admin',express.static(path.join(__dirname, '../admin/dist'),{
+app.use('/admin',express.static(path.join(__dirname, '../admin'),{
   maxAge:31536000
 }))
 console.log( config.baseUrl);
 var proxyTable = {
   '/api': {
       target:  config.baseUrl,
+      changeOrigin: true,
       pathRewrite: {
           '^/api': '/'
       }

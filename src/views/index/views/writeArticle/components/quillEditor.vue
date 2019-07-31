@@ -95,6 +95,7 @@ export default {
         
         .w-e-text-container{
             height:80vh !important;
+            z-index:100 !important;
         }
         .w-e-toolbar{
             flex-wrap:wrap;

@@ -18,7 +18,16 @@ export function createAPI({ server }) {
   });
   instance.interceptors.request.use(function (config) {
     SSR.cookies && (config.headers.Cookie = SSR.cookies);
-      return config;
+    var cookies = {};
+    if(SSR.cookies){
+
+      SSR.cookies.split(';').forEach((str)=>{
+        var arr = str.split('=');
+        cookies[arr[0]] = arr[1]
+      })
+    }
+    config.headers['blade-auth'] = cookies['x-access-token'] || ""
+    return config;
   }, function (error) {
       return Promise.reject(error);
   });
@@ -33,7 +42,6 @@ export function createAPI({ server }) {
         return Promise.reject(response)
     }, 
     function (error) {
-      console.log(error);
         return Promise.reject(error);
     }
   );

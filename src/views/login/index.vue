@@ -29,23 +29,27 @@
 
 var Qs = require('qs');
 import { mapMutations ,mapState} from 'vuex'
+import Cookies from 'js-cookie'
 export default {
     name:'login',
     data:function(){
         return {
             active:0,
             validateForm:{
-                userName:'pure',
-                password:'luckluck',
+                userName:'',
+                password:'',
                 isAgree:false,
             }
         }
+    },
+    beforeMount(){
+        this.user && this.$router.push('/')
     },
     computed:{
         ...mapState(['user'])
     },
     methods:{
-        ...mapMutations(['setUser']),
+        ...mapMutations(['setUser','setKiss_plan_token']),
         login() {
             if(!this.validateForm.userName || !this.validateForm.password){
                 this.$message({
@@ -74,7 +78,10 @@ export default {
                     this.setUser(res.data)
                     window.localStorage.setItem('user',JSON.stringify(res.data))
                     window.localStorage.setItem('token',res.data.token)
+                    Cookies.set('x-access-token', res.data.token);
                     setTimeout(()=>{
+                        this.setUser();
+		                this.setKiss_plan_token();
                         this.$router.push('/index')
                         // location.href='/index'
                     },1300)

@@ -6,30 +6,26 @@ if (window.__INITIAL_STATE__) {
 }
 
 router.beforeEach((to, from, next) => {
-    // store.dispatch('currentUser')
-    //     .then((res)=>{
-    //         if(to.meta.requiresAuth){
+    if(to.meta.requiresAuth){
                
-    //             if(res && res.status=='200'){
-    //                 return next();
-    //             }else{
-    //                 Vue.prototype.$message({
-    //                     message: '当前页面需要登陆呦！',
-    //                     showClose: true,
-    //                     type: 'warning'
-    //                 });
-    //                 return next({ path: '/login' });
-    //             }
-    //         }else{
-    //             if(to.path=='/login' || to.path=='/register' ){
-    //                 if(store.state.user.user){
-    //                    return next({path:'/'})
-    //                 } 
-    //             }
-    //             return next();
-    //         }
-    //     })
-        next();
+        if(store.state.token){
+            return next();
+        }else{
+            Vue.prototype.$message({
+                message: '当前页面需要登陆呦！',
+                showClose: true,
+                type: 'warning'
+            });
+            return next({ path: '/login' });
+        }
+    }else{
+        if(to.path=='/login' || to.path=='/register' ){
+            if(store.state.user){
+                return next({path:'/'})
+            } 
+        }
+        return next();
+    }
 })
 router.afterEach(()=>{
 })

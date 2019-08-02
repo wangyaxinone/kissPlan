@@ -1,7 +1,6 @@
 import qs from 'qs';
 import axios from 'axios'
 import { parseCookie } from '@/util/util'
-
 const SSR = global.__VUE_SSR_CONTEXT__
 
 export function createAPI({ server }) {
@@ -26,7 +25,7 @@ export function createAPI({ server }) {
         cookies[arr[0]] = arr[1]
       })
     }
-    config.headers['blade-auth'] = cookies['x-access-token'] || ""
+    config.headers['blade-auth'] = cookies[' x-access-token'] || ""
     return config;
   }, function (error) {
       return Promise.reject(error);

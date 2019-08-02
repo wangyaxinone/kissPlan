@@ -42,6 +42,7 @@ import axios from 'axios'
 var Qs = require('qs');
 import { createNamespacedHelpers } from 'vuex';
 const { mapState, mapActions,mapMutations } = createNamespacedHelpers('register');
+import Cookies from 'js-cookie'
 export default {
     name:'login',
     data:function(){
@@ -69,15 +70,22 @@ export default {
             if(this.userErr && this.passWordErr && this.phoneErr){
                 this._register(this.validateForm)
                 .then((res)=>{
-                    if(res && res.status=='200'){
+                    if(res && res.code==200){
                         this.$message({
                             message: '注册成功',
                             showClose: true,
                             type: 'success'
                         });
+                        this.$store.commit('setUser',res.data)
+                        window.localStorage.setItem('user',JSON.stringify(res.data))
+                        window.localStorage.setItem('token',res.data.token)
+                        Cookies.set('x-access-token', res.data.token);
                         setTimeout(()=>{
-                            this.$router.push('/login')
-                        },1000)
+                            this.$store.commit('setUser')
+                            this.$store.commit('setKiss_plan_token')
+                            this.$router.push('/index')
+                            // location.href='/index'
+                        },1300)
                     }
                 })
             }else{

@@ -5,36 +5,47 @@
             <mu-button style="float:right;" flat :color="active=='desc'?'primary':''" @click="setActive('desc')">按时间倒序</mu-button>
             <h2 class="comment-count">{{data.total}}条评论</h2>
             <div class="comment-box mt10">
-                <div v-for="(item,idx) in data.list" :key="'news-'+idx" class="item">
+                <div v-for="(item,idx) in data.records" :key="'news-'+idx" class="item">
                     <div class="clearfix head">
                         <mu-avatar size="45" style="vertical-align: middle;margin-right:5px;cursor:pointer;float:left;">
-                            <img :src="item.avatars"   @click="$router.push(`/userHome/${item.authorId}`)">
+                            <img :src="item.from.avatarImg"   @click="$router.push(`/userHome/${item.from._id}`)">
                         </mu-avatar>
                         <div  style="margin-left:50px;">
-                            <p class="nickname" @click="$router.push(`/userHome/${item.authorId}`)" style="cursor:pointer">{{item.username}}</p>
-                            <p class="floor">{{idx+1}}楼 {{item.updateDate | formatDate('yyyy-MM-dd hh:mm:ss')}}</p>
+                            <p class="nickname" @click="$router.push(`/userHome/${item.from._id}`)" style="cursor:pointer">{{item.from.name || item.from.userName}}</p>
+                            <p class="floor">{{idx+1}}楼 {{item.meta.creatAt | formatDate('yyyy-MM-dd hh:mm:ss')}}</p>
                         </div>
                     </div>
                     <div class="compiled_content" style="padding:10px 0;font-size:16px;word-break: break-word!important;line-height: 1.5;">
-                        {{item.content}}
+                        {{item.comment}}
                     </div>
-                    <div @click="comment(idx,null,item,item)">
-                        <mu-icon size="25" value=":icon-message" class="iconfont" style="vertical-align: middle;cursor:pointer;"></mu-icon>
-                        <span style="cursor:pointer;">回复</span>
+                    <div>
+                        <span  @click="comment(idx,null,item,item)">
+                            <mu-icon size="25" value=":icon-message" class="iconfont" style="vertical-align: middle;cursor:pointer;"></mu-icon>
+                            <span style="cursor:pointer;">回复</span>
+                        </span>
+                        <span style="cursor:pointer;margin-left:10px;" @click="commentThumbsUp(item)"  :class="{active:item.isCurrentUserLiked}">
+                            <i class="iconfont icon-shoucang_xiantiao" style="font-size:25px;vertical-align: middle;"></i>
+                            {{item.commentThumbsUp.length}}
+                        </span>
                     </div>
                     <pingLun  ref="pingLun" v-model="content"  @cancel="cancel" :hide_head="true" @ok="ok" v-if="parentIdx==idx && !childIdx && childIdx!==0"></pingLun>
                     <div class="child-content mt20">
-                        <div v-for="(child,index) in (item.childCommentList?item.childCommentList.slice(0,3):[])" :key="index" class="mt20 childItem">
+                        <div v-for="(child,index) in item.childCommentList" :key="index" class="mt20 childItem">
                             <div class="child-content-text">
-                                <span class="nickname" @click="$router.push(`/userHome/${child.authorId}`)" style="cursor:pointer">{{child.username}}</span>:
-                                <span v-html="child.content"></span>
+                                <span class="nickname" @click="$router.push(`/userHome/${child.from._id}`)" style="cursor:pointer">{{child.from.name || child.from.userName}}</span>:
+                                <span class="nickname" @click="$router.push(`/userHome/${child.to._id}`)" style="cursor:pointer">@{{child.to.name || child.to.userName}}</span>:
+                                <span v-html="child.commentReply"></span>
                             </div>
                              <div @click="comment(idx,index,child,item)">
                                 <mu-icon size="20" value=":icon-message" class="iconfont" style="vertical-align: middle;cursor:pointer;"></mu-icon>
                                 <span style="cursor:pointer;">回复</span>
                             </div>
-                            <div class="child-content-time">{{child.updateDate | formatDate('yyyy-MM-dd hh:mm:ss')}}</div>
+                            <div class="child-content-time">{{child.meta.creatAt | formatDate('yyyy-MM-dd hh:mm:ss')}}</div>
                             <pingLun ref="pingLun" v-model="content" @cancel="cancel" :hide_head="true" @ok="ok" v-if="parentIdx==idx && childIdx==index"></pingLun>
+                        </div>
+                        <div v-if="item.childCommentTotle>3 && item.childCommentTotle>item.childCommentList.length" @click="getCommentReply(item,idx)" style="text-align:center;padding:10px;color:#999;cursor:pointer;">
+                            <span v-if="item.childCommentList.length<=3">展开{{item.childCommentTotle}}条回复</span>
+                            <span v-else>展开更多回复</span>
                         </div>
                     </div>
                 </div>
@@ -60,6 +71,7 @@ export default {
             childIdx:null,
             content:'',
             pid:undefined,
+            toUser:undefined
         }
     },
     props:{
@@ -85,20 +97,29 @@ export default {
         ok(data) {
             this.$emit('comment',{
                 content:data.pingLun,
-                pid:this.pid
+                pid:this.pid,
+                toUser:this.toUser
             })
             
         },
         comment(parentIdx,childIdx,item,Pitem) {
             this.parentIdx = parentIdx;
             this.childIdx = childIdx;
-            this.pid = Pitem.id;
-            this.content = `@${item.username}  `;
+            this.pid = Pitem._id;
+            this.toUser = Pitem.from._id;
+            this.content = ``;
         },
         cancel() {
             this.parentIdx = null;
             this.childIdx = null;
             this.$refs['pingLun'][0].setValue('');
+        },
+        getCommentReply(item,idx) {
+            item.idx = idx;
+            this.$emit('commentReply',item)
+        },
+        commentThumbsUp(item) {
+            this.$emit('commentThumbsUp',item)
         }
     },
     watch:{
@@ -150,6 +171,9 @@ export default {
         .noComment{
             font-size:18px;
             color:#aaa;
+        }
+        .active{
+            color:#ea6f5a;
         }
     }
 </style>

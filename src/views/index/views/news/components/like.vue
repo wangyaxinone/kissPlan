@@ -1,10 +1,10 @@
 <template>
     <div class="like">
-        <div class="like-box":class="{active:data.isCurrentUserLiked}">
+        <div class="like-box" :class="{active:data.isCurrentUserLiked}">
             <i class="iconfont icon-shoucang_xiantiao" style="font-size:25px;vertical-align: middle;"  @click="clickHandle" ></i>
             <span  @click="clickHandle" >喜欢</span>
             <span>|</span>
-            <span>{{data.likeNum | MoneyFormat(true)}}</span>
+            <span>{{data.articleThumbsUp.length | MoneyFormat(true)}}</span>
         </div>
     </div>
 </template>

@@ -4,7 +4,7 @@
             <mu-row gutter>
                 <mu-col span="24"  sm="24" md="10" style="margin:0 auto;">
                     <h1 class="title">{{news.title}}</h1>
-                    <newsAutor :data="news"></newsAutor>
+                    <newsAutor :data="news" :comment="comment"></newsAutor>
                     <textPic :data="news.content"></textPic>
                     <zanShang class="mt20"></zanShang>
                     <mu-row gutter >
@@ -16,7 +16,7 @@
                         </mu-col>
                     </mu-row>
                     <pingLun ref="pingLun" style="margin-top:40px;" :hide_cancel="true" @ok="getContext" v-model="value"></pingLun>
-                    <comment style="padding:40px 0;" ref="comment" :data="comment" :pageNo="pageNo" @sortType="getSortType" @pageChange="pageChange" @comment="commentText"></comment>
+                    <comment style="padding:40px 0;" ref="comment" :data="comment" :pageNo="pageNo" @sortType="getSortType" @pageChange="pageChange" @commentReply="getCommentReply" @comment="commentText" @commentThumbsUp="commentThumbsUp"></comment>
                 </mu-col>
             </mu-row>
         </div>
@@ -24,7 +24,7 @@
 </template>
 <script>
 import { createNamespacedHelpers } from 'vuex';
-const { mapState, mapActions } = createNamespacedHelpers('news');
+const { mapState, mapActions,mapMutations } = createNamespacedHelpers('news');
 import newsAutor from "./components/newsAutor.vue"
 import textPic from "./components/textPic.vue"
 import zanShang from "./components/zanShang.vue"
@@ -41,13 +41,13 @@ export default {
         }
         return Promise.all([
             store.dispatch('news/getNews',{
-                id:id
+                _id:id
             }),
             
-            // store.dispatch('news/getComment',{
-            //     id:id,
-            //     pageNo:1
-            // }),
+            store.dispatch('news/getComment',{
+                _id:id,
+                pageNo:1
+            }),
         ]);
     },
     data(){
@@ -70,16 +70,45 @@ export default {
         comment
     },
     methods:{
-        ...mapActions(['articleLike','_articleReply','getComment','_articleLike']),
-        //评论
-        commentText(data) {
-            this.$store.dispatch('news/_articleReply',{
-                articleId:this.$route.params.id,
-                content:data.content,
-                pid:data.pid
+        ...mapActions(['articleLike','_commentReply','_comment','getComment','_articleLike']),
+        commentThumbsUp(data) {
+            this.$store.dispatch('news/_commentThumbsUp',{
+                _id:data._id,
+            })
+            .then((res)=>{
+                if(res && res.code===200){
+                     this.getComment({
+                        _id:this.$route.params.id,
+                        pageNo:this.pageNo,
+                        sortType:this.sortType
+                    })
+                }
+            })
+        },
+        getCommentReply(data) {
+            this.$store.dispatch('news/_getCommentReply',{
+                _id:data._id,
+                index:data.childCommentList.length
            })
            .then((res)=>{
-                if(res && res.status=='200'){
+               if(res && res.code===200){
+                   this.$store.commit('news/_updateCommentReply',{
+                       data:res.data,
+                       idx:data.idx
+                   });
+               }
+           })
+        },
+        //评论
+        commentText(data) {
+            this.$store.dispatch('news/_commentReply',{
+                // articleId:this.$route.params.id,
+                to:data.toUser,
+                commentReply:data.content,
+                comment:data.pid
+           })
+           .then((res)=>{
+                if(res && res.code=='200'){
                     this.$refs['comment'].cancel();
                     this.$message({
                         message: '评论成功',
@@ -87,7 +116,7 @@ export default {
                         type: 'success'
                     });
                     this.$store.dispatch('news/getComment',{
-                        id:this.$route.params.id,
+                        _id:this.$route.params.id,
                         pageNo:this.pageNo,
                         sortType:this.sortType
                     })
@@ -97,7 +126,7 @@ export default {
         pageChange(pageNo) {
             this.pageNo = Number(pageNo);
             this.getComment({
-                id:this.$route.params.id,
+                _id:this.$route.params.id,
                 pageNo:this.pageNo,
                 sortType:this.sortType
             })
@@ -106,32 +135,32 @@ export default {
             this.sortType = sortType;
             this.pageNo =1;
             this.getComment({
-                id:this.$route.params.id,
+                _id:this.$route.params.id,
                 pageNo:this.pageNo,
                 sortType:sortType
             })
         },
         //点赞
         clickLike() {
-            this._articleLike({
-                id:this.$route.params.id,
-                isCancel:this.news.isCurrentUserLiked?1:0
+            var _this = this;
+            _this._articleLike({
+                _id:_this.$route.params.id
             })
             .then((res)=>{
-                if(res && res.status=='200'){
-                    this.$store.dispatch('news/getNews',{
-                        id:this.$route.params.id,
+                if(res && res.code=='200'){
+                    _this.$store.dispatch('news/getNews',{
+                        _id:_this.$route.params.id,
                     })
                 }
             })
         },
         getContext(data){
-            this._articleReply({
-                articleId:this.$route.params.id,
-                content:data.pingLun
+            this._comment({
+                article:this.$route.params.id,
+                comment:data.pingLun
             })
             .then((res)=>{
-                if(res && res.status=='200'){
+                if(res && res.code==200){
                     this.$refs['pingLun'].setValue('');
                     this.$message({
                         message: '评论成功',
@@ -139,7 +168,7 @@ export default {
                         type: 'success'
                     });
                     this.getComment({
-                        id:this.$route.params.id,
+                        _id:this.$route.params.id,
                         pageNo:this.pageNo,
                         sortType:this.sortType
                     })

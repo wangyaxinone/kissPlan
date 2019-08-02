@@ -34,7 +34,6 @@ export default {
                 url:`admin/Articles?current=${data.pageNo}&size=${data.pageSize}`
             })
             .then((res)=>{
-                console.log(res);
                 if(res.code==200){
                     if(res.data && res.data.records && res.data.records.length){
                         commit('setNewItem',res.data)
@@ -54,7 +53,6 @@ export default {
             state.imgs=data 
         },
         setNewItem:(state,data)=>{
-            console.log(data);
             state.newItemObj = data;
             if(data.current>1){
                 state.newItem = state.newItem.concat(data.records)

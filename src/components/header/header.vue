@@ -30,7 +30,7 @@
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command="个人中心">个人中心</el-dropdown-item>
-                            <el-dropdown-item command="消息中心">消息中心</el-dropdown-item>
+                            <!-- <el-dropdown-item command="消息中心">消息中心</el-dropdown-item> -->
                             <el-dropdown-item command="设置">设置</el-dropdown-item>
                             <el-dropdown-item command="退出登录" @click="signOut">退出登录</el-dropdown-item>
                         </el-dropdown-menu>
@@ -98,12 +98,12 @@
                         </mu-list-item-action>
                         <mu-list-item-title >个人中心</mu-list-item-title>
                     </mu-list-item>
-                    <mu-list-item button >
+                    <!-- <mu-list-item button >
                         <mu-list-item-action class="tac">
                             <i class="iconfont icon-addressbook"></i>
                         </mu-list-item-action>
                         <mu-list-item-title >消息中心</mu-list-item-title>
-                    </mu-list-item>
+                    </mu-list-item> -->
                     <mu-list-item button >
                         <mu-list-item-action class="tac">
                             <i class="iconfont icon-setup"></i>
@@ -154,7 +154,7 @@ export default {
             if(command=='退出登录'){
                 this.signOut();
             }else if(command=='个人中心'){
-                var id = this.$store.state.user && this.$store.state.user.user.id
+                var id = this.$store.state.user && this.$store.state.user._id
                 window.location.href = `/userHome/${id}`
             }else if(command=='消息中心'){
                 window.location.href = `/message`
@@ -247,7 +247,7 @@ export default {
             this.$router.push('/writeArticle')
         },
         goUserHome() {
-            var id = this.$store.state.user && this.$store.state.user.user.id
+            var id = this.$store.state.user && this.$store.state.user._id
             this.$router.push(`/userHome/${id}`)
         }
     }

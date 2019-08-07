@@ -8,10 +8,10 @@
                 <div v-for="(item,idx) in data.records" :key="'news-'+idx" class="item">
                     <div class="clearfix head">
                         <mu-avatar size="45" style="vertical-align: middle;margin-right:5px;cursor:pointer;float:left;">
-                            <img :src="item.from.avatarImg"   @click="$router.push(`/userHome/${item.from._id}`)">
+                            <img :src="item.from && item.from.avatarImg"   @click="$router.push(`/userHome/${item.from && item.from._id}`)">
                         </mu-avatar>
                         <div  style="margin-left:50px;">
-                            <p class="nickname" @click="$router.push(`/userHome/${item.from._id}`)" style="cursor:pointer">{{item.from.name || item.from.userName}}</p>
+                            <p class="nickname" @click="$router.push(`/userHome/${item.from && item.from._id}`)" style="cursor:pointer">{{item.from && (item.from.name || item.from.userName)}}</p>
                             <p class="floor">{{idx+1}}楼 {{item.meta.creatAt | formatDate('yyyy-MM-dd hh:mm:ss')}}</p>
                         </div>
                     </div>
@@ -32,8 +32,8 @@
                     <div class="child-content mt20">
                         <div v-for="(child,index) in item.childCommentList" :key="index" class="mt20 childItem">
                             <div class="child-content-text">
-                                <span class="nickname" @click="$router.push(`/userHome/${child.from._id}`)" style="cursor:pointer">{{child.from.name || child.from.userName}}</span>:
-                                <span class="nickname" @click="$router.push(`/userHome/${child.to._id}`)" style="cursor:pointer">@{{child.to.name || child.to.userName}}</span>:
+                                <span class="nickname" @click="$router.push(`/userHome/${child.from && child.from._id}`)" style="cursor:pointer">{{child.from && (child.from.name || child.from.userName)}}</span>:
+                                <span class="nickname" @click="$router.push(`/userHome/${child.to && child.to._id}`)" style="cursor:pointer">@{{child.to && (child.to.name || child.to.userName)}}</span>:
                                 <span v-html="child.commentReply"></span>
                             </div>
                              <div @click="comment(idx,index,child,item)">

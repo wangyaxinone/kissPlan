@@ -8,7 +8,7 @@
             <p class="abstract"  v-html="data.content">
             </p>
             <div class="meta">
-                <a class="nickname mr10" target="_blank"  :href="'/news/'+data._id">{{data.user.name || data.user.userName}}</a>
+                <a class="nickname mr10" target="_blank"  :href="'/news/'+data._id">{{data.user && (data.user.name || data.user.userName)}}</a>
                 <span class="mr10"><i class="iconfont icon-message"></i>{{data.commentNum}}</span>
                 <span><i class="iconfont icon-shoucang_xiantiao"></i> {{data.likeNum}}</span>
             </div>
@@ -42,18 +42,19 @@ export default {
             top: 50%;
             margin-top: -60px;
             right: 0;
-            width: 150px;
+            width: 25%;
             height: 100px;
             img{
                 width: 100%;
                 height: 100%;
                 border-radius: 4px;
                 border: 1px solid #f0f0f0;
+                object-fit: cover; 
             }
         }
         .content{
             &.hasImg{
-                padding-right: 165px;
+                padding-right: 25%;
             }
             .title{
                 font-family: -apple-system,SF UI Display,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;

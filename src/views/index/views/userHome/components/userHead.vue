@@ -2,21 +2,21 @@
     <div class="userHead">
         <div class="pic">
             <mu-avatar size="60" style="vertical-align: middle;margin-right:5px;cursor:pointer;"  ref="button">
-                <img :src="data.avatars">
+                <img :src="data.avatarImg">
             </mu-avatar>
         </div>
         <div class="userHead_detail">
             <mu-row gutter>
                 <mu-col span="6" sm="6" md="6">
-                    <h1 class="userHead_detail_name">{{data.username}}</h1>
+                    <h1 class="userHead_detail_name">{{data.name || data.userName}}</h1>
                     <div>
                         
                     </div>
                 </mu-col>
-                <mu-col span="6" sm="6" md="6">
-                    <div class="btns tar" v-if="$store.state.user.user && $store.state.route.params.id!=$store.state.user.user.id">
-                        <mu-button round color="success">发简信</mu-button>
-                        <mu-button round color="success" >关注</mu-button>
+                <mu-col span="6" sm="6" md="6" v-if="!$store.state.user || ($route.params.id!=$store.state.user._id)">
+                    <div class="btns tar" >
+                        <!-- <mu-button round color="success">发简信</mu-button> -->
+                        <mu-button round color="success" @click="followHandle($route.params.id)">关注</mu-button>
                     </div>
                 </mu-col>
             </mu-row>
@@ -37,7 +37,13 @@ export default {
         }
     },
     props:['data'],
-    mounted() {
+    methods:{
+        followHandle(_id) {
+            this.$store.dispatch('_follow',{_id:_id})
+            .then((res)=>{
+
+            })
+        }
     }
 }
 </script>

@@ -12,35 +12,6 @@ export function createStore(){
             theme:'#ea6f5a',
             pageSize:10,
         },
-        actions:{
-            // getUser({commit},data) {
-            //     return api.instance({
-            //         method:'post',
-            //         url:'/u/check',
-            //         hasLoading:false,
-            //         data:Qs.stringify({
-            //             username:data.username,
-            //             email:data.email,
-            //         })
-            //     })
-            // },
-            // currentUser({commit}) {
-            //     return api.instance({
-            //         method:'get',
-            //         url:'/u/currentUser',
-            //         hasLoading:true,
-            //     })
-            //     .then((res)=>{
-            //         if(res && res.status=='200'){
-            //             commit('setCurrentUser',res.data)
-            //         }else{
-            //             commit('setCurrentUser',null)
-            //         }
-            //         return res;
-            //     })
-                
-            // }
-        },
         mutations:{
             setUser (state) {
                 var user = window.localStorage.getItem('user')
@@ -63,7 +34,17 @@ export function createStore(){
                     method:'get',
                     url:'/logout',
                 })
-            }
+            },
+            _follow({commit},data) {
+                return api.instance({
+                    method:'post',
+                    url:'/admin/follow',
+                    hasLoading:false,
+                    data:{
+                        target:data._id,
+                    }
+                })
+            },
         },
         modules
     })

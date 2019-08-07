@@ -5,16 +5,18 @@ export default {
     namespaced:true,
     state:() => ({
         _userDetail:{},
-        _newsList:[]
+        _newsList:[],
+        _newItemObj:{}
     }),
     actions : {
         _getUserHome({commit},data){
             return api.instance({
                 method:'get',
-                url:`/u/${data.id}`
+                url:`/user/userHome?_id=${data.id}`
             })
             .then((res)=>{
-                if(res.status==200){
+                console.log(res.data);
+                if(res.code==200){
                     if(res.data){
                         commit('_setUserDetail',res.data)
                     }else{
@@ -27,10 +29,10 @@ export default {
         _getMyNewsList({commit},data) {
             return api.instance({
                 method:'get',
-                url:`/article?pageNo=${data.pageNo}&pageSize=${data.pageSize}&authorId=${data.userId}`
+                url:`/user/article?current=${data.pageNo}&size=${data.pageSize}&user=${data.userId}`
             })
             .then((res)=>{
-                if(res.status==200){
+                if(res.code==200){
                     if(res.data){
                         commit('_set_newsList',res.data)
                     }else{
@@ -46,7 +48,12 @@ export default {
             state._userDetail = data;
         },
         _set_newsList(state,data) {
-            state._newsList = data;
+            state._newItemObj = data;
+            if(data.current>1){
+                state._newsList = state._newsList.concat(data.records)
+            }else{
+                state._newsList = data.records;
+            }
         }
     }
 }

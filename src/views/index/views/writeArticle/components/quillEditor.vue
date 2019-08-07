@@ -24,7 +24,7 @@ export default {
         create_info(){
             var that = this;
             this.editor = new wangeditor('#mYwangEditor');
-            this.editor.customConfig.uploadImgServer = this.uploadUrl+'/upload';
+            this.editor.customConfig.uploadImgServer = this.uploadUrl+'/admin/uploadFile';
             this.editor.customConfig.uploadFileName = 'file'
             this.editor.customConfig.onchange = function (html) {
                 that.$emit('input',{
@@ -69,8 +69,8 @@ export default {
                 customInsert: function (insertImg, result, editor) {
                     // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
                     // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
-                    if(result.status=='200' && result.data ){
-                        var url = result.data
+                    if(result.code=='200' && result.data ){
+                        var url = result.data.url
                         insertImg(url)
                     }else{
                         that.$Message.warning('图片上传失败');

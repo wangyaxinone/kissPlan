@@ -6,7 +6,7 @@
             </mu-avatar>
             <div style="margin-left:50px;height:50px;">
                 <div style="padding:0 10px;">
-                    <span class="name " @click="$router.push(`/userHome/${data._id}`)" style="cursor:pointer;">{{data.user && (data.user.name || data.user.userName)}}</span>
+                    <span class="name " @click="$router.push(`/userHome/${data.user._id}`)" style="cursor:pointer;">{{data.user && (data.user.name || data.user.userName)}}</span>
                     <mu-tooltip content="更新达人">
                         <i class="iconfont icon-bi"></i>
                     </mu-tooltip>

@@ -26,7 +26,7 @@ export default {
         }
     },
     computed:{
-        ...mapState(['_userDetail','_newsList'])
+        ...mapState(['_userDetail','_newsList','_newItemObj'])
     },
     components:{
         userHead,
@@ -37,11 +37,7 @@ export default {
         this.$store.dispatch('userHome/_getUserHome',{
             id:this.$route.params.id
         });
-        this._getMyNewsList({
-            pageNo:'1',
-            pageSize:10,
-            userId:this.$route.params.id
-        })
+       
     },
     methods:{
         ...mapActions(['_getMyNewsList','_getUserHome'])

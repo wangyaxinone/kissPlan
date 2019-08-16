@@ -19,6 +19,22 @@ export default {
         ]
     },
     actions : {
+        _getNews({commit},data){
+            return api.instance({
+                method:'get',
+                url:`admin/getNews?_id=${data._id}`
+            })
+            .then((res)=>{
+                if(res.code==200){
+                    if(res.data){
+                        commit('set_writeArticleMenuType',res.data)
+                    }else{
+                        commit('set_writeArticleMenuType',{})
+                    }
+                }
+                return res
+            })
+        },
         articleSave({commit,state},config) {
             var data = state._writeArticleMenuType[0];
             return api.instance({
@@ -45,6 +61,16 @@ export default {
         }
     },
     mutations:{
+        set_writeArticleMenuType(state,data) {
+            state._writeArticleMenuType =  [{
+                title:data.title,
+                content:data.content,
+                type:data.type,
+                self:data.self,
+                mdContent:data.mdContent,
+                active:true,
+            }]
+        },
         _setArticleType(state,data){
             state._articleType = data;
         },

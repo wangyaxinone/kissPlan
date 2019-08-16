@@ -45,6 +45,16 @@ export function createStore(){
                     }
                 })
             },
+            _unFollow({commit},data){
+                return api.instance({
+                    method:'delete',
+                    url:'/admin/follow',
+                    hasLoading:false,
+                    data:{
+                        target:data._id,
+                    }
+                })
+            }
         },
         modules
     })

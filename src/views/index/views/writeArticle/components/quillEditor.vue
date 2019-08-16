@@ -85,6 +85,7 @@ export default {
     },
     watch:{
         value(newValue,oldValue) {
+            debugger
             this.editor.txt.html(this.value.content)
         }
     }

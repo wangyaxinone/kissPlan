@@ -148,7 +148,7 @@ export default {
             })
             .then((res)=>{
                 if(res && res.code=='200'){
-                    _this.$store.dispatch('news/getNews',{
+                    _this.$store.dispatch('news/getNewsTwo',{
                         _id:_this.$route.params.id,
                     })
                 }

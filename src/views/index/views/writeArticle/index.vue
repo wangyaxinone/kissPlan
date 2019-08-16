@@ -37,6 +37,21 @@ export default {
     computed:{
         ...mapState(['_editorType','_mavonEditorQP','_writeArticleMenuType'])
     },
+    mounted(){
+        if(this.$route.query.id){
+
+            this._getNews({
+                _id:this.$route.query.id
+            })
+            .then(()=>{
+                this.data = {
+                    content:this._writeArticleMenuType[0].content,
+                    mdContent:this._writeArticleMenuType[0].mdContent,
+                    articleType:this._writeArticleMenuType[0].articleType,
+                }
+            })
+        }
+    },
     components:{
        ledtController ,
        mavonEditorMy,
@@ -45,7 +60,8 @@ export default {
        controllerMenu
     },
     methods:{
-       ...mapMutations(['_writeText'])
+       ...mapMutations(['_writeText']),
+       ...mapActions(['_getNews']),
     },
     watch:{
         data(newValue,oldValue) {

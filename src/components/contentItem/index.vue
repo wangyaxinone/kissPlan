@@ -4,13 +4,14 @@
             <img class="img-blur-done" :src="data.thumbnail" alt="120">
         </a>
         <div class="content" :class="{hasImg:data.thumbnail}">
-            <a class="title"  :href="'/news/'+data._id" target="_blank">{{data.title}}</a>
+            <a class="title"  :href="'/news/'+data._id" target="_blank">{{data.title}} <a v-if="$store.state.user && ($route.params.id==$store.state.user._id)" :href="'/writeArticle?id='+data._id" style="margin-left:15px;">编辑<i class="el-icon-edit"></i></a></a>
             <p class="abstract"  v-html="data.content">
             </p>
             <div class="meta">
                 <a class="nickname mr10" target="_blank"  :href="'/news/'+data._id">{{data.user && (data.user.name || data.user.userName)}}</a>
                 <span class="mr10"><i class="iconfont icon-message"></i>{{data.commentNum}}</span>
                 <span><i class="iconfont icon-shoucang_xiantiao"></i> {{data.likeNum}}</span>
+                
             </div>
         </div>
     </div>
@@ -30,7 +31,9 @@ export default {
                 return {}
             }
         },
-        
+        edit:{
+            type:Boolean
+        }
     }
 }
 </script>

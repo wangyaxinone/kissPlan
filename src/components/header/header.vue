@@ -158,6 +158,8 @@ export default {
                 window.location.href = `/userHome/${id}`
             }else if(command=='消息中心'){
                 window.location.href = `/message`
+            }else if(command=='设置'){
+                window.location.href = `/setup`
             }
             
         },

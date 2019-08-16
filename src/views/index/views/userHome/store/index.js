@@ -41,6 +41,20 @@ export default {
                 }
                 return res
             })
+        },
+        _getFollowSource({commit},data) {
+            return api.instance({
+                method:'get',
+                url:`/admin/follow?current=${data.pageNo}&size=${data.pageSize}&source=${data.source}`
+            })
+            
+        },
+        _getFollowTarget({commit},data) {
+            return api.instance({
+                method:'get',
+                url:`/admin/follow?current=${data.pageNo}&size=${data.pageSize}&target=${data.target}`
+            })
+            
         }
     },
     mutations:{

@@ -18,6 +18,7 @@ const config = merge(baseConfig,{
         app:path.join(__dirname,'../src/entry-client.js'),
         //vendors:['vue','vue-router','vuex']
     },
+    
     resolve: {
         extensions: ['.js', '.vue', '.json'],
         alias: {

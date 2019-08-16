@@ -2,11 +2,13 @@
     <div class="asideMenu">
         <el-menu default-active="1" unique-opened class="el-menu-vertical-demo">
             <el-menu-item :index="idx+1+''" v-for="(item,idx) in _writeArticleMenuType" :key="idx" @mouseenter.native="mouseenter(idx)" @mouseleave.native="mouseleave" @click.native="clickNative(idx)">
-                <i class="el-icon-document"></i>
-                <span slot="title">
+                <i class="el-icon-document" v-if="hoverIdx!==idx"></i>
+                <i class="el-icon-edit"  @click="openSimpleDialog(idx)" v-else></i>
+                <span slot="title" style="max-width:179px;display:inline-block;">
                     {{item.title}}
-                    <i class="el-icon-edit" style="margin-left:15px;" @click="openSimpleDialog(idx)" v-if="hoverIdx===idx"></i>
+                   
                 </span>
+                 
             </el-menu-item>
             
         </el-menu>

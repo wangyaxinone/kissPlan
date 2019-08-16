@@ -24,6 +24,22 @@ export default {
                 return res
             })
         },
+        getNewsTwo({commit},data){
+            return api.instance({
+                method:'get',
+                url:`admin/getNewsTwo?_id=${data._id}`
+            })
+            .then((res)=>{
+                if(res.code==200){
+                    if(res.data){
+                        commit('setNews',res.data)
+                    }else{
+                        commit('setNews',{})
+                    }
+                }
+                return res
+            })
+        },
         _getCommentReply({commit},data) {
             return api.instance({
                 method:'get',

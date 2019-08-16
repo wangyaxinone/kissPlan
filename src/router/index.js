@@ -58,6 +58,24 @@ export function createRouter(){
                         component:()=>import(/* webpackChunkName: "userHome" */'@/views/index/views/userHome/index.vue')
                     },
                     {
+                        path:'/setup',
+                        name:'设置',
+                        redirect:'/setup/basicSettings',
+                        component:()=>import(/* webpackChunkName: "userHome" */'@/views/index/views/setup/index.vue'),
+                        children:[
+                            {
+                                path:'/setup/basicSettings',
+                                name:'基础设置',
+                                component:()=>import(/* webpackChunkName: "userHome" */'@/views/index/views/setup/basicSettings/index.vue'),
+                            },
+                            {
+                                path:'/setup/personalSettings',
+                                name:'个人设置',
+                                component:()=>import(/* webpackChunkName: "userHome" */'@/views/index/views/setup/personalSettings/index.vue'),
+                            },
+                        ]
+                    },
+                    {
                         path:'/message',
                         name:'消息中心',
                         redirect:'/message/communication',

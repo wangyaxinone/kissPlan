@@ -92,6 +92,7 @@ export default {
 </script>
 <style lang="less">
 .carousel{
+    overflow: hidden;
     .mu-carousel{
         // height:270px;
     }

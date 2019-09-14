@@ -47,6 +47,7 @@ export default {
             right: 0;
             width: 25%;
             height: 100px;
+            overflow: hidden;
             img{
                 width: 100%;
                 height: 100%;

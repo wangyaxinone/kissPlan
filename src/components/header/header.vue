@@ -56,7 +56,7 @@
                 </mu-col>
             </mu-row>
         </mu-container>
-        <div class="phone_menu" :class="{active:phone_menu}" :style="{height:phone_menu_height}">
+        <div class="phone_menu" v-if="phone_menu" :class="{active:phone_menu}" :style="{height:phone_menu_height}">
             <mu-list>
                 <mu-list-item button  @click="()=>{this.goHome();this.click_phone_menu()}">
                     <mu-list-item-action>

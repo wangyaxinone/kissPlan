@@ -81,6 +81,7 @@
     "vue-server-renderer": "^2.5.16",
     "vuex": "^3.0.1",
     "vuex-router-sync": "^5.0.0",
-    "wangeditor": "^3.1.1"
+    "wangeditor": "^3.1.1",
+    "webpack-manifest": "^1.0.8"
   }
 }

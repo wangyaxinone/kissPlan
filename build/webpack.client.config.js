@@ -9,6 +9,8 @@ const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
+var Manifest= require('webpack-manifest');
+var pkg =require('../package');
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -37,6 +39,30 @@ const config = merge(baseConfig,{
         new VueLoaderPlugin(),
         new htmlWebpackPlugin({
             template:path.join(__dirname,'../src/index.template.html')
+        }),
+        new Manifest({
+            cache: [
+                'home',
+                '/static/js/app.[hash].js', 
+                '/static/js/home.[hash].js', 
+                '/static/css/app.[hash:6].css',
+                '/static/css/home.[hash:6].css',
+            ],
+            //Add time in comments.
+            timestamp: true,
+            // 生成的文件名字，选填
+            // The generated file name, optional.
+            filename:'cache.manifest', 
+            // 注意*星号前面用空格隔开
+            network: [
+              '*',
+            ],
+            // 注意中间用空格隔开
+            fallback: ['/ /404.html'],
+            // manifest 文件中添加注释
+            // Add notes to manifest file.
+            headcomment: pkg.name + " v" + pkg.version, 
+            master: ['index/index.html']
         }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),

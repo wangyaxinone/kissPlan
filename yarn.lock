@@ -3997,6 +3997,11 @@ lodash@^4.17.11, lodash@^4.17.15, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
+lodash@~4.13.1:
+  version "4.13.1"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.13.1.tgz#83e4b10913f48496d4d16fec4a560af2ee744b68"
+  integrity sha1-g+SxCRP0hJbU0W/sSlYK8u50S2g=
+
 loglevel@^1.6.3:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.4.tgz#f408f4f006db8354d0577dcf6d33485b3cb90d56"
@@ -7038,6 +7043,13 @@ webpack-log@^2.0.0:
   dependencies:
     ansi-colors "^3.0.0"
     uuid "^3.3.2"
+
+webpack-manifest@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/webpack-manifest/-/webpack-manifest-1.0.8.tgz#fff2a0970e5aee4c9e1431a19aa9c5866953f0dc"
+  integrity sha1-//Kglw5a7kyeFDGhmqnFhmlT8Nw=
+  dependencies:
+    lodash "~4.13.1"
 
 webpack-md5-hash@^0.0.6:
   version "0.0.6"

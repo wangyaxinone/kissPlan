@@ -66,7 +66,7 @@
     "express": "^4.16.3",
     "jquery": "^3.3.1",
     "js-cookie": "^2.2.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mavon-editor": "^2.6.17",
     "mongoose": "^5.6.2",
     "muse-ui": "^3.0.0-rc.4",
